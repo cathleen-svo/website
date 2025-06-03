@@ -1,0 +1,20 @@
+<?php
+include 'koneksi.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nama = $_POST['nama'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $pesan = $_POST['pesan'] ?? '';
+
+    // Simpan ke tabel kritik_saran
+    $stmt = $conn->prepare("INSERT INTO kritik_saran (nama, email, pesan) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $nama, $email, $pesan);
+    $stmt->execute();
+    $stmt->close();
+
+    echo "<h2>Pesan Anda berhasil dikirim!</h2>";
+    echo "<p><a href='index.php'>Kembali ke halaman utama</a></p>";
+} else {
+    header("Location: index.php");
+    exit;
+}
