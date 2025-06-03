@@ -12,6 +12,8 @@ $kantins = $conn->query("SELECT * FROM kantin");
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Kantin Sekolah SMK Telkom Jakarta</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
   <style>
     html {
       scroll-behavior: smooth;
@@ -142,10 +144,11 @@ $kantins = $conn->query("SELECT * FROM kantin");
     <ul id="listPesanan" class="list-group mb-3"></ul>
     <p><strong>Total Harga: Rp <span id="totalHarga">0</span></strong></p>
 
-    <div id="qrCodeDummy" class="mb-3" style="display:none;">
+    <div id="qrCodeContainer" class="mb-3" style="display:none;">
       <h5>QR Code Pemesanan</h5>
-      <img src="dummy_qr.png" alt="QR Code" class="img-fluid" style="max-width:200px;" />
+      <div id="qrcode" style="max-width:200px;"></div>
     </div>
+
 
     <button type="button" class="btn btn-primary" onclick="submitPesanan()">Submit Pesanan</button>
   </section>
@@ -279,10 +282,23 @@ $kantins = $conn->query("SELECT * FROM kantin");
     if (data.status === 'success') {
       alert('Pesanan berhasil dikirim!');
 
-      // tampilkan QR code dummy
-      document.getElementById('qrCodeDummy').style.display = 'block';
+      
+      document.getElementById('qrCodeContainer').style.display = 'block';
 
-      // baru reset pesanan
+      
+      document.getElementById('qrcode').innerHTML = "";
+
+      
+      const dataQR = `Nama: ${namaPembeli}\nTotal: Rp${totalHarga.toLocaleString()}`;
+
+      
+      new QRCode(document.getElementById("qrcode"), {
+        text: dataQR,
+        width: 200,
+        height: 200,
+      });
+
+      
       pesanan = [];
       updatePesanan();
     } else {
@@ -297,7 +313,9 @@ $kantins = $conn->query("SELECT * FROM kantin");
 
 
 
+
 </script>
 
 </body>
 </html>
+
