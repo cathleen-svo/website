@@ -1,0 +1,32 @@
+CREATE DATABASE IF NOT EXISTS db_kantin;
+USE db_kantin;
+CREATE TABLE kantin (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nama_kantin VARCHAR(100) NOT NULL
+);
+CREATE TABLE menu (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  id_kantin INT NOT NULL,
+  nama VARCHAR(100) NOT NULL,
+  harga INT NOT NULL,
+  stok INT NOT NULL DEFAULT 0,
+  foto VARCHAR(255) DEFAULT NULL,
+  FOREIGN KEY (id_kantin) REFERENCES kantin(id) ON DELETE CASCADE
+);
+INSERT INTO kantin (nama_kantin) VALUES
+('Kantin A'),
+('Kantin B'),
+('Kantin C');
+
+INSERT INTO menu (id_kantin, nama, harga, stok, foto) VALUES
+(1, 'Nasi Goreng', 15000, 20, 'nasi_goreng.jpg'),
+(1, 'Mie Ayam', 12000, 15, 'mie_ayam.jpg'),
+(2, 'Sate Ayam', 18000, 10, 'sate_ayam.jpg'),
+(3, 'Es Teh', 5000, 30, 'es_teh.jpg');
+
+CREATE TABLE pesanan (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nama_pembeli VARCHAR(100) NOT NULL,
+  tanggal TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  total_harga INT NOT NULL
+);
